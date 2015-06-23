@@ -72,16 +72,24 @@ class AudioEngine: NSObject {
 //    NSAssert(soundFileURL, @"Error creating URL to sound file");
         assert(soundFileURL != nil, "Error creating URL to sound file")
 //    NSError *error;
-        var error: NSError? = nil
 //    AVAudioFile *soundFile = [[AVAudioFile alloc] initForReading:soundFileURL commonFormat:AVAudioPCMFormatFloat32 interleaved:NO error:&error];
-        let soundFile = AVAudioFile(forReading: soundFileURL!, commonFormat: AVAudioCommonFormat.PCMFormatFloat32, interleaved: false, error: &error)
+        let soundFile: AVAudioFile!
+        do {
+            soundFile = try AVAudioFile(forReading: soundFileURL!, commonFormat: AVAudioCommonFormat.PCMFormatFloat32, interleaved: false)
+        } catch let error as NSError {
+            //soundFile = nil
+            fatalError("Error creating soundFile, \(error.localizedDescription)")
+        }
 //    NSAssert(soundFile != nil, @"Error creating soundFile, %@", error.localizedDescription);
-        assert(soundFile != nil, "Error creating soundFile, \(error!.localizedDescription)")
 //
 //    AVAudioPCMBuffer *outputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:soundFile.processingFormat frameCapacity:(AVAudioFrameCount)soundFile.length];
         let outputBuffer = AVAudioPCMBuffer(PCMFormat: soundFile!.processingFormat, frameCapacity: AVAudioFrameCount(soundFile!.length))
 //    NSAssert([soundFile readIntoBuffer:outputBuffer error:&error], @"Error reading file into buffer, %@", error.localizedDescription);
-        assert(soundFile!.readIntoBuffer(outputBuffer, error:&error), "Error reading file into buffer, \(error!.localizedDescription)")
+        do {
+            try soundFile!.readIntoBuffer(outputBuffer)
+        } catch let error as NSError {
+            fatalError("Error reading file into buffer, \(error.localizedDescription)")
+        }
 //
 //    return outputBuffer;
         return outputBuffer
@@ -182,9 +190,12 @@ class AudioEngine: NSObject {
 //{
     private func startEngine() {
 //    NSError *error;
-        var error: NSError? = nil
 //    NSAssert([_engine startAndReturnError:&error], @"Error starting engine, %@", error.localizedDescription);
-        assert(_engine.startAndReturnError(&error), "Error starting engine, \(error!.localizedDescription)")
+        do {
+            try _engine.start()
+        } catch let error as NSError {
+            fatalError("Error starting engine, \(error.localizedDescription)")
+        }
 //}
     }
 //
@@ -283,7 +294,7 @@ class AudioEngine: NSObject {
 //    [_engine connect:newPlayer to:_environment format:_collisionSoundBuffer.format];
         _engine.connect(newPlayer, to: _environment, format: _collisionSoundBuffer.format)
 //    [_collisionPlayerArray insertObject:newPlayer atIndex:[node.name integerValue]];
-        _collisionPlayerArray.insert(newPlayer, atIndex: node.name!.toInt()!)
+        _collisionPlayerArray.insert(newPlayer, atIndex: Int(node.name!)!)
 //
 //    // pick a rendering algorithm based on the rendering format
 //    AVAudio3DMixingRenderingAlgorithm renderingAlgo = _multichannelOutputEnabled ?
@@ -306,7 +317,7 @@ class AudioEngine: NSObject {
 //{
     func destroyPlayerForSCNNode(node: SCNNode) {
 //    NSInteger playerIndex = [node.name integerValue];
-        let playerIndex = node.name!.toInt()!
+        let playerIndex = Int(node.name!)!
 //    AVAudioPlayerNode *player = _collisionPlayerArray[playerIndex];
         let player = _collisionPlayerArray[playerIndex]
 //    [player stop];
@@ -318,11 +329,12 @@ class AudioEngine: NSObject {
 //
 //- (void)playCollisionSoundForSCNNode:(SCNNode *)node position:(AVAudio3DPoint)position impulse:(float)impulse
 //{
-    func playCollisionSoundForSCNNode(node: SCNNode, position: AVAudio3DPoint, impulse: Float) {
+    //### ImplicitlyUnwrappedOptional needed to avoid Abort trap: 6.
+    func playCollisionSoundForSCNNode(node: SCNNode, position: AVAudio3DPoint!, impulse: Float) {
 //    if (_engine.isRunning) {
         if _engine.running {
 //        NSInteger playerIndex = [node.name integerValue];
-            let playerIndex = node.name!.toInt()!
+            let playerIndex = Int(node.name!)!
 //
 //        AVAudioPlayerNode *player = _collisionPlayerArray[playerIndex];
             let player = _collisionPlayerArray[playerIndex]
