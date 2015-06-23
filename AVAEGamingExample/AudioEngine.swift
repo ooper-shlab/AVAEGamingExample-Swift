@@ -329,8 +329,7 @@ class AudioEngine: NSObject {
 //
 //- (void)playCollisionSoundForSCNNode:(SCNNode *)node position:(AVAudio3DPoint)position impulse:(float)impulse
 //{
-    //### ImplicitlyUnwrappedOptional needed to avoid Abort trap: 6.
-    func playCollisionSoundForSCNNode(node: SCNNode, position: AVAudio3DPoint!, impulse: Float) {
+    func playCollisionSoundForSCNNode(node: SCNNode, position: AVAudio3DPoint, impulse: Float) {
 //    if (_engine.isRunning) {
         if _engine.running {
 //        NSInteger playerIndex = [node.name integerValue];
