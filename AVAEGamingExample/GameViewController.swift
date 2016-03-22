@@ -277,7 +277,7 @@ class GameViewController: NSViewController, SCNPhysicsContactDelegate {
 //                [self createAndLaunchBall:ballID];
                     self.createAndLaunchBall(ballID)
 //                ++ballIndex;
-                    ++ballIndex
+                    ballIndex += 1
 //            }];
                 }
 //

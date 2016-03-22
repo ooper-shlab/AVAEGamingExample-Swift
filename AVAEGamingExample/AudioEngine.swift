@@ -370,7 +370,7 @@ class AudioEngine: NSObject {
 //
 //- (float)calculateVolumeForImpulse:(float)impulse
 //{
-    private func calculateVolumeForImpulse(var impulse: Float) -> Float {
+    private func calculateVolumeForImpulse(_impulse: Float) -> Float {
 //    // Simple mapping of impulse to volume
 //
 //    const float volMinDB = -20.;
@@ -378,6 +378,7 @@ class AudioEngine: NSObject {
 //    const float impulseMax = 12.;
         let impulseMax: Float = 12.0
 //
+        var impulse = _impulse
 //    if (impulse > impulseMax) impulse = impulseMax;
         if impulse > impulseMax { impulse = impulseMax }
 //    float volDB = (impulse / impulseMax * -volMinDB) + volMinDB;
@@ -390,7 +391,7 @@ class AudioEngine: NSObject {
 //
 //- (float)calculatePlaybackRateForImpulse:(float)impulse
 //{
-    private func calculatePlaybackRateForImpulse(var impulse: Float) -> Float {
+    private func calculatePlaybackRateForImpulse(_impulse: Float) -> Float {
 //    // Simple mapping of impulse to playback rate (pitch)
 //    // This gives the effect of the pitch dropping as the impulse reduces
 //
@@ -407,6 +408,7 @@ class AudioEngine: NSObject {
 //    const float impulseRange = impulseMax - impulseMin;
         let impulseRange: Float = impulseMax - impulseMin
 //
+        var impulse = _impulse
 //    if (impulse > impulseMax)   impulse = impulseMax;
         if impulse > impulseMax  { impulse = impulseMax }
 //    if (impulse < impulseMin)   impulse = impulseMin;
