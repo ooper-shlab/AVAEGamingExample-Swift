@@ -12,7 +12,7 @@
 		30AD31B1192EC3120032BC30 /* launchSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 30AD31B0192EC3120032BC30 /* launchSound.caf */; };
 		94CA7B771924A8C30005BA4B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B761924A8C30005BA4B /* Images.xcassets */; };
 		94CA7B7A1924A8C30005BA4B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B781924A8C30005BA4B /* MainMenu.xib */; };
-		94CA7B901924A8D30005BA4B /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CA7B8F1924A8D30005BA4B /* SceneKit.framework */; };
+		94CA7B901924A8D30005BA4B /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CA7B8F1924A8D30005BA4B /* SceneKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		94CA7B921924A91D0005BA4B /* assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B911924A91D0005BA4B /* assets.scnassets */; };
 		D7F4FE1F1AE454E400F5C24F /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F4FE1E1AE454E400F5C24F /* AudioEngine.swift */; };
 		D7F4FE231AE51E4C00F5C24F /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F4FE221AE51E4C00F5C24F /* GameView.swift */; };
@@ -146,11 +146,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = apple;
 				TargetAttributes = {
 					94CA7B621924A8C30005BA4B = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -228,8 +229,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -237,6 +240,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -270,8 +274,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
@@ -279,6 +285,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -303,6 +310,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.scenekit.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = AVAEGamingExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -317,6 +325,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.scenekit.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = AVAEGamingExample;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

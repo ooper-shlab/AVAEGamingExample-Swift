@@ -11,29 +11,16 @@
     Abstract:
     GameView
 */
-//
-//@import SceneKit;
+
 import SceneKit
-//
-//@interface GameView : SCNView
+
 @objc(GameView)
 class GameView: SCNView {
-//
-//@end
-//
-//#import "GameView.h"
-//
-//@implementation GameView
-//
-//-(void)mouseDown:(NSEvent *)theEvent
-//{
-    override func mouseDown(theEvent: NSEvent) {
-//    /* Called when a mouse click occurs */
-//
-//    [super mouseDown:theEvent];
-        super.mouseDown(theEvent)
-//}
+    
+    override func mouseDown(with theEvent: NSEvent) {
+        /* Called when a mouse click occurs */
+        
+        super.mouseDown(with: theEvent)
     }
-//
-//@end
+    
 }
