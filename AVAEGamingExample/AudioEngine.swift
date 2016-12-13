@@ -207,7 +207,7 @@ class AudioEngine: NSObject {
         }
     }
     
-    func playLaunchSound(_ completionHandler: AVAudioNodeCompletionHandler) {
+    func playLaunchSound(_ completionHandler: @escaping AVAudioNodeCompletionHandler) {
         if _engine.isRunning {
             _launchSoundPlayer.scheduleBuffer(_launchSoundBuffer, completionHandler: completionHandler)
             _launchSoundPlayer.play()
