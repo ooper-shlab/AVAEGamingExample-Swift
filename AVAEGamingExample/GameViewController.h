@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015 Apple Inc. All Rights Reserved.
+    Copyright (C) 2016 Apple Inc. All Rights Reserved.
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
@@ -8,10 +8,10 @@
 
 @import SceneKit;
 
-#import "GameView.h"
-
+#if TARGET_OS_IOS || TARGET_OS_TV
+@interface GameViewController : UIViewController <SCNPhysicsContactDelegate>
+#else
 @interface GameViewController : NSViewController <SCNPhysicsContactDelegate>
-
-@property (assign) IBOutlet GameView *gameView;
+#endif
 
 @end

@@ -3,15 +3,15 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    GameView
+    Application Delegate
 */
 
-@import SceneKit;
+@import UIKit;
 
-@class AudioEngine;
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@interface GameView : SCNView
+@property (strong, nonatomic) UIWindow *window;
 
-@property (strong) AudioEngine *gameAudioEngine;
 
 @end
+

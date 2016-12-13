@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015 Apple Inc. All Rights Reserved.
+    Copyright (C) 2016 Apple Inc. All Rights Reserved.
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
@@ -19,12 +19,30 @@
 @import AVFoundation;
 @import SceneKit;
 
+@protocol AudioEngineDelegate <NSObject>
+
+@optional
+- (void)engineWasInterrupted;
+- (void)engineHasRestarted;
+- (void)engineConfigurationHasChanged;
+@end
+
 @interface AudioEngine : NSObject
+
+@property (weak) id<AudioEngineDelegate> delegate;
+@property (nonatomic, getter=isRunning) BOOL running;
 
 - (void)createPlayerForSCNNode:(SCNNode *)node;
 - (void)destroyPlayerForSCNNode:(SCNNode *)node;
 
 - (void)playCollisionSoundForSCNNode:(SCNNode *)node position:(AVAudio3DPoint)position impulse:(float)impulse;
-- (void)playLaunchSound:(AVAudioNodeCompletionHandler)completionHandler;
+- (void)playLaunchSoundAtPosition:(AVAudio3DPoint)position completionHandler:(AVAudioNodeCompletionHandler)completionHandler;
+
+- (void)updateListenerPosition:(AVAudio3DPoint)position;
+- (void)updateListenerOrientation:(AVAudio3DAngularOrientation)orientation;
+
+-(AVAudio3DAngularOrientation)listenerAngularOrientation;
+-(AVAudio3DPoint)listenerPosition;
+
 
 @end

@@ -1,17 +1,22 @@
 /*
-    Copyright (C) 2015 Apple Inc. All Rights Reserved.
+    Copyright (C) 2016 Apple Inc. All Rights Reserved.
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
     GameViewController
 */
 
-#import "GameViewController.h"
 #import "AudioEngine.h"
 
-@interface GameViewController() {
+#import "GameView.h"
+#import "GameViewController.h"
+
+@interface GameViewController() <AudioEngineDelegate> {
     AudioEngine *_audioEngine;
 }
+
+@property (assign) GameView *gameView;
+
 @end
 
 @implementation GameViewController
@@ -22,37 +27,24 @@ static float randFloat(float min, float max){
 
 - (void)physicsWorld:(SCNPhysicsWorld *)world didEndContact:(SCNPhysicsContact *)contact
 {
-    if (contact.collisionImpulse > 0.6 ) { // arbitrary threshold
-        
+    if (contact.collisionImpulse > 0.6 /* arbitrary threshold */) {
         AVAudio3DPoint contactPoint = AVAudioMake3DPoint(contact.contactPoint.x, contact.contactPoint.y, contact.contactPoint.z);
-        SCNNode* ballNode;
-        
-        // Check which contact node is the ball
-        // There is no guaranty regarding the ordering in the contact pair so check both
-        if( [contact.nodeA.name isEqualToString:@"Wall"] ) {
-                //NSLog(@"ballNode = contact.nodeB");
-            ballNode = contact.nodeB;
-        } else {
-                //NSLog(@"ballNode = contact.nodeA");
-            ballNode = contact.nodeA;
-        }
-        
-        [_audioEngine playCollisionSoundForSCNNode:ballNode position:contactPoint impulse:contact.collisionImpulse];
+        [_audioEngine playCollisionSoundForSCNNode:contact.nodeB position:contactPoint impulse:contact.collisionImpulse];
     }
 }
 
 - (void)setupPhysicsScene:(SCNScene *)scene
 {
-    SCNNode *node = [scene.rootNode childNodeWithName:@"Cube" recursively:YES];
-    node.castsShadow = NO;
+    SCNNode *cube = [scene.rootNode childNodeWithName:@"Cube" recursively:YES];
+    cube.castsShadow = NO;
     
     SCNNode *lightNode = [scene.rootNode childNodeWithName:@"MainLight" recursively:YES];
     lightNode.light.shadowMode = SCNShadowModeModulated;
 
     SCNVector3 min, max;
-    [node getBoundingBoxMin:&min max:&max];
+    [cube getBoundingBoxMin:&min max:&max];
     
-    float cubeSize = (max.y-min.y) * node.scale.y;
+    float cubeSize = (max.y-min.y) * cube.scale.y;
     float wallWidth = 1;
     SCNBox *wallGeometry = [SCNBox boxWithWidth:cubeSize height:cubeSize length:wallWidth chamferRadius:0];
     wallGeometry.firstMaterial.transparency = 0;
@@ -63,9 +55,10 @@ static float randFloat(float min, float max){
     wall1.name = @"Wall";
     wall1.geometry = wallGeometry;
     wall1.physicsBody = [SCNPhysicsBody staticBody];
+    wall1.physicsBody.contactTestBitMask = SCNPhysicsCollisionCategoryDefault;
     wall1.position = SCNVector3Make(0, 0, -wallPosition);
     [scene.rootNode addChildNode:wall1];
-
+    
     SCNNode *wall2 = [wall1 copy];
     wall2.position = SCNVector3Make(0, 0, wallPosition);
     wall2.eulerAngles = SCNVector3Make(M_PI, 0, 0);
@@ -91,6 +84,12 @@ static float randFloat(float min, float max){
     wall6.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
     [scene.rootNode addChildNode:wall6];
     
+    SCNNode *pointOfViewCamera = [scene.rootNode childNodeWithName:@"Camera" recursively:YES];
+    self.gameView.pointOfView = pointOfViewCamera;
+    
+    SCNNode *listener = [scene.rootNode childNodeWithName:@"listenerLight" recursively:YES];
+    listener.position = pointOfViewCamera.position;
+    
     // setup physics callbacks
     scene.physicsWorld.contactDelegate = self;
     
@@ -111,7 +110,7 @@ static float randFloat(float min, float max){
     ball.position = SCNVector3Make(0, -2, 2.5);
     
     ball.physicsBody = [SCNPhysicsBody dynamicBody];
-    ball.physicsBody.restitution = 1.2; // bounce!
+    ball.physicsBody.restitution = 1.2; //bounce!
     
     // create an AVAudioEngine player which will be tied to this ball
     [_audioEngine createPlayerForSCNNode:ball];
@@ -129,18 +128,26 @@ static float randFloat(float min, float max){
     [SCNTransaction commit];
 }
 
-// removeBall is never called but included for completeness
 - (void)removeBall:(SCNNode *)ball
 {
     [_audioEngine destroyPlayerForSCNNode:ball];
     [ball removeFromParentNode];
 }
 
--(void)awakeFromNib
+-(void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     // create a new scene
-    SCNScene *scene = [SCNScene sceneNamed:@"cube.dae" inDirectory:@"assets.scnassets" options:nil];
-
+    SCNScene *scene = [SCNScene sceneNamed:@"cube.scn" inDirectory:@"assets.scnassets" options:nil];
+    
+    // find the SCNView
+    for (id view in self.view.subviews) {
+        if ([[view class] isSubclassOfClass:[SCNView class]]) {
+            self.gameView = view;
+        }
+    }
+    
     // set the scene to the view
     self.gameView.scene = scene;
     
@@ -150,29 +157,41 @@ static float randFloat(float min, float max){
     // setup audio engine
     _audioEngine = [[AudioEngine alloc] init];
     
+    //make the listener position the same as the camera point of view
+    [_audioEngine updateListenerPosition:AVAudioMake3DPoint(0, -2, 2.5)];
+    
+    self.gameView.gameAudioEngine = _audioEngine;
+    
     // create a queue that will handle adding SceneKit nodes (balls) and corresponding AVAudioEngine players
     dispatch_queue_t queue = dispatch_queue_create("DemBalls", DISPATCH_QUEUE_SERIAL);
     dispatch_async(queue, ^{
         while (1) {
-            __block int ballIndex = 0;
-            
-            // play the launch sound
-            [_audioEngine playLaunchSound:^{
+            while (_audioEngine.isRunning) {
+                static int ballIndex = 0;
                 
-                // launch sound has finished scheduling
-                // now create and launch a ball
-                NSString *ballID = [[NSNumber numberWithInt:ballIndex] stringValue];
-                [self createAndLaunchBall:ballID];
-                ++ballIndex;
-            }];
-            
-            // wait for some time before launching the next ball
-            sleep(4);
+                // play the launch sound
+                [_audioEngine playLaunchSoundAtPosition:AVAudioMake3DPoint(0, -2, 2.5) completionHandler:^{
+                    
+                    // launch sound has finished scheduling
+                    // now create and launch a ball
+                    NSString *ballID = [[NSNumber numberWithInt:ballIndex] stringValue];
+                    [self createAndLaunchBall:ballID];
+                    ++ballIndex;
+                }];
+                
+                // wait for some time before launching the next ball
+                sleep(4);
+            }
         }
     });
     
     // configure the view
-    self.gameView.backgroundColor = [NSColor blackColor];  
+#if TARGET_OS_IOS ||TARGET_OS_TV
+    self.gameView.backgroundColor = [UIColor blackColor];
+#else
+    self.gameView.backgroundColor = [NSColor blackColor];
+#endif
 }
+
 
 @end

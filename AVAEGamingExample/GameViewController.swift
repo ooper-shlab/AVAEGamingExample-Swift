@@ -16,52 +16,49 @@ import Foundation
 import AVFoundation
 import SceneKit
 
+#if os(iOS) || os(tvOS)
+    typealias OSViewController = UIViewController
+    typealias SCNVectorFloat = Float
+    typealias OSColor = UIColor
+#else
+    typealias OSViewController = NSViewController
+    typealias SCNVectorFloat = CGFloat
+    typealias OSColor = NSColor
+#endif
 @objc(GameViewController)
-class GameViewController: NSViewController, SCNPhysicsContactDelegate {
-    
-    @IBOutlet weak var gameView: GameView!
+class GameViewController: OSViewController, SCNPhysicsContactDelegate, AudioEngineDelegate {
     
     var _audioEngine: AudioEngine!
     
-    func randFloat(_ min: CGFloat, _ max: CGFloat) -> CGFloat {
-        return min + ((max-min)*(CGFloat(arc4random())/CGFloat(RAND_MAX)))
+    private var gameView: GameView!
+    
+    func randFloat<F: FloatingPoint>(_ min: F, _ max: F) -> F {
+        return min + ((max-min)*(F(arc4random())/F(RAND_MAX)))
     }
     
     let BallCategoryBit = Int(SCNPhysicsCollisionCategory.default.rawValue)
     let WallCategoryBit = Int(SCNPhysicsCollisionCategory.static.rawValue)
     
     func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
-        if contact.collisionImpulse > 0.6 { // arbitrary threshold
+        if contact.collisionImpulse > 0.6 /* arbitrary threshold */ {
             
             let contactPoint = AVAudioMake3DPoint(Float(contact.contactPoint.x), Float(contact.contactPoint.y), Float(contact.contactPoint.z))
-            let ballNode: SCNNode
-            
-            // Check which contact node is the ball
-            // There is no guaranty regarding the ordering in the contact pair so check both
-            if contact.nodeA.name == "Wall" {
-                //NSLog(@"ballNode = contact.nodeB");
-                ballNode = contact.nodeB
-            } else {
-                //NSLog(@"ballNode = contact.nodeA");
-                ballNode = contact.nodeA
-            }
-            
-            _audioEngine.playCollisionSoundForSCNNode(ballNode, position: contactPoint, impulse: Float(contact.collisionImpulse))
+            _audioEngine.playCollisionSoundForSCNNode(contact.nodeB, position: contactPoint, impulse: Float(contact.collisionImpulse))
         }
     }
     
     func setupPhysicsScene(_ scene: SCNScene) {
-        let node = scene.rootNode.childNode(withName: "Cube", recursively: true)!
-        node.castsShadow = false
+        let cube = scene.rootNode.childNode(withName: "Cube", recursively: true)!
+        cube.castsShadow = false
         
         let lightNode = scene.rootNode.childNode(withName: "MainLight", recursively: true)!
         lightNode.light!.shadowMode = SCNShadowMode.modulated
         
-        let (min, max) = node.boundingBox
+        let (min, max) = cube.boundingBox
         
-        let cubeSize: CGFloat = (max.y-min.y) * node.scale.y
-        let wallWidth: CGFloat = 1
-        let wallGeometry = SCNBox(width: cubeSize, height: cubeSize, length: wallWidth, chamferRadius: 0)
+        let cubeSize: SCNVectorFloat = (max.y-min.y) * cube.scale.y
+        let wallWidth: SCNVectorFloat = 1
+        let wallGeometry = SCNBox(width: CGFloat(cubeSize), height: CGFloat(cubeSize), length: CGFloat(wallWidth), chamferRadius: 0)
         wallGeometry.firstMaterial!.transparency = 0
         
         let wallPosition = (cubeSize/2 + wallWidth/2)
@@ -70,42 +67,48 @@ class GameViewController: NSViewController, SCNPhysicsContactDelegate {
         wall1.name = "Wall"
         wall1.geometry = wallGeometry
         wall1.physicsBody = SCNPhysicsBody.static()
-        wall1.position = SCNVector3Make(0, 0, -wallPosition)
-        if #available(OSX 10.11, *) {
-            wall1.physicsBody?.contactTestBitMask = BallCategoryBit
+        if #available(OSX 10.11, iOS 9.0, *) {
+            wall1.physicsBody?.contactTestBitMask = Int(SCNPhysicsCollisionCategory.default.rawValue)
         }
+        wall1.position = SCNVector3Make(0, 0, -wallPosition)
         scene.rootNode.addChildNode(wall1)
         
         let wall2 = wall1.copy() as! SCNNode
         wall2.position = SCNVector3Make(0, 0, wallPosition)
-        wall2.eulerAngles = SCNVector3Make(CGFloat(M_PI), 0, 0)
+        wall2.eulerAngles = SCNVector3Make(SCNVectorFloat(M_PI), 0, 0)
         scene.rootNode.addChildNode(wall2)
         
         let wall3 = wall1.copy() as! SCNNode
         wall3.position = SCNVector3Make(-wallPosition, 0, 0)
-        wall3.eulerAngles = SCNVector3Make(0, CGFloat(M_PI_2), 0)
+        wall3.eulerAngles = SCNVector3Make(0, SCNVectorFloat(M_PI_2), 0)
         scene.rootNode.addChildNode(wall3)
         
         let wall4 = wall1.copy() as! SCNNode
         wall4.position = SCNVector3Make(wallPosition, 0, 0)
-        wall4.eulerAngles = SCNVector3Make(0, CGFloat(-M_PI_2), 0)
+        wall4.eulerAngles = SCNVector3Make(0, SCNVectorFloat(-M_PI_2), 0)
         scene.rootNode.addChildNode(wall4)
         
         let wall5 = wall1.copy() as! SCNNode
         wall5.position = SCNVector3Make(0, wallPosition, 0)
-        wall5.eulerAngles = SCNVector3Make(CGFloat(M_PI_2), 0, 0)
+        wall5.eulerAngles = SCNVector3Make(SCNVectorFloat(M_PI_2), 0, 0)
         scene.rootNode.addChildNode(wall5)
         
         let wall6 = wall1.copy() as! SCNNode
         wall6.position = SCNVector3Make(0, -wallPosition, 0)
-        wall6.eulerAngles = SCNVector3Make(CGFloat(-M_PI_2), 0, 0)
+        wall6.eulerAngles = SCNVector3Make(SCNVectorFloat(-M_PI_2), 0, 0)
         scene.rootNode.addChildNode(wall6)
+        
+        let pointOfViewCamera = scene.rootNode.childNode(withName: "Camera", recursively: true)!
+        self.gameView.pointOfView = pointOfViewCamera
+        
+        let listener = scene.rootNode.childNode(withName: "listenerLight", recursively: true)!
+        listener.position = pointOfViewCamera.position
         
         // setup physics callbacks
         scene.physicsWorld.contactDelegate = self
         
         // turn off gravity for more fun
-//        scene.physicsWorld.gravity = SCNVector3Zero
+        //        scene.physicsWorld.gravity = SCNVector3Zero
     }
     
     private func createAndLaunchBall(_ ballID: String) {
@@ -120,7 +123,7 @@ class GameViewController: NSViewController, SCNPhysicsContactDelegate {
         ball.position = SCNVector3Make(0, -2, 2.5)
         
         ball.physicsBody = SCNPhysicsBody.dynamic()
-        ball.physicsBody!.restitution = 1.2 // bounce!
+        ball.physicsBody!.restitution = 1.2 //bounce!
         if #available(OSX 10.11, *) {
             ball.physicsBody?.contactTestBitMask = BallCategoryBit | WallCategoryBit
         }
@@ -131,7 +134,7 @@ class GameViewController: NSViewController, SCNPhysicsContactDelegate {
         self.gameView.scene!.rootNode.addChildNode(ball)
         
         // bias the direction towards one of the side walls
-        let whichWall = round(randFloat(0, 1));  // 0 is left and 1 is right
+        let whichWall = round(randFloat(0 as SCNVectorFloat, 1));  // 0 is left and 1 is right
         let xVal = (1 - whichWall) * randFloat(-8, -3) + whichWall * randFloat(3, 8)
         
         // initial force
@@ -141,16 +144,24 @@ class GameViewController: NSViewController, SCNPhysicsContactDelegate {
         SCNTransaction.commit()
     }
     
-    // removeBall is never called but included for completeness
     func removeBall(_ ball: SCNNode) {
         _audioEngine.destroyPlayerForSCNNode(ball)
         ball.removeFromParentNode()
     }
     
-    override func awakeFromNib() {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         // create a new scene
         let options: [SCNSceneSource.LoadingOption : Any]? = nil //###Needed to build with Xcode 8 beta 6
-        let scene = SCNScene(named: "cube.dae", inDirectory: "assets.scnassets", options: options)!
+        let scene = SCNScene(named: "cube.scn", inDirectory: "assets.scnassets", options: options)!
+        
+        // find the SCNView
+        for view in self.view.subviews {
+            if let view = view as? GameView {
+                self.gameView = view
+            }
+        }
         
         // set the scene to the view
         self.gameView.scene = scene
@@ -161,29 +172,38 @@ class GameViewController: NSViewController, SCNPhysicsContactDelegate {
         // setup audio engine
         _audioEngine = AudioEngine()
         
+        //make the listener position the same as the camera point of view
+        _audioEngine.updateListenerPosition(AVAudioMake3DPoint(0, -2, 2.5))
+        
+        self.gameView.gameAudioEngine = _audioEngine;
+        
         // create a queue that will handle adding SceneKit nodes (balls) and corresponding AVAudioEngine players
         let queue = DispatchQueue(label: "DemBalls", attributes: []/*DispatchQueue.Attributes.serial*/)
         queue.async {
             while true {
-                var ballIndex = 0
-                
-                // play the launch sound
-                self._audioEngine.playLaunchSound {
-                    
-                    // launch sound has finished scheduling
-                    // now create and launch a ball
-                    let ballID = String(ballIndex)
-                    self.createAndLaunchBall(ballID)
-                    ballIndex += 1
+                struct Static {
+                    static var ballIndex = 0
                 }
-                
-                // wait for some time before launching the next ball
-                sleep(4)
+                while self._audioEngine.isRunning {
+                    
+                    // play the launch sound
+                    self._audioEngine.playLaunchSoundAtPosition(AVAudioMake3DPoint(0, -2, 2.5)) {
+                        
+                        // launch sound has finished scheduling
+                        // now create and launch a ball
+                        let ballID = String(Static.ballIndex)
+                        self.createAndLaunchBall(ballID)
+                        Static.ballIndex += 1
+                    }
+                    
+                    // wait for some time before launching the next ball
+                    sleep(4);
+                }
             }
         }
         
         // configure the view
-        self.gameView.backgroundColor = NSColor.black
+        self.gameView.backgroundColor = .black
     }
     
 }

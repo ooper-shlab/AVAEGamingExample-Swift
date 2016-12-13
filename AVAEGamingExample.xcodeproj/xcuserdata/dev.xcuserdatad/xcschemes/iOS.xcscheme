@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0800"
+   LastUpgradeVersion = "0810"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "94CA7B621924A8C30005BA4B"
+               BlueprintIdentifier = "B1D82CF61BC2F8CE00F4B330"
                BuildableName = "AVAEGamingExample.app"
-               BlueprintName = "AVAEGamingExample"
+               BlueprintName = "iOS"
                ReferencedContainer = "container:AVAEGamingExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94CA7B621924A8C30005BA4B"
+            BlueprintIdentifier = "B1D82CF61BC2F8CE00F4B330"
             BuildableName = "AVAEGamingExample.app"
-            BlueprintName = "AVAEGamingExample"
+            BlueprintName = "iOS"
             ReferencedContainer = "container:AVAEGamingExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94CA7B621924A8C30005BA4B"
+            BlueprintIdentifier = "B1D82CF61BC2F8CE00F4B330"
             BuildableName = "AVAEGamingExample.app"
-            BlueprintName = "AVAEGamingExample"
+            BlueprintName = "iOS"
             ReferencedContainer = "container:AVAEGamingExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -74,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94CA7B621924A8C30005BA4B"
+            BlueprintIdentifier = "B1D82CF61BC2F8CE00F4B330"
             BuildableName = "AVAEGamingExample.app"
-            BlueprintName = "AVAEGamingExample"
+            BlueprintName = "iOS"
             ReferencedContainer = "container:AVAEGamingExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

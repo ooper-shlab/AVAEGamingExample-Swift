@@ -4,12 +4,18 @@ This sample demonstrate the use of the AVAudioEngine, AVAudioEnvironmentNode and
 
 ## Requirements
 
+Xcode 8.1 or greater
+
 ### Build
 
-OS X 10.10 SDK
+iOS   9.0   SDK or greater
+tvOS  9.0   SDK or greater
+macOS 10.11 SDK or greater
 
 ### Runtime
 
-OS X 10.10 or greater
+iOS   9.0   or greater
+tvOS  9.0   or greater
+macOS 10.12 or greater
 
-Copyright (C) 2015 Apple Inc. All rights reserved.
+Copyright (C) 2015-2016 Apple Inc. All rights reserved.

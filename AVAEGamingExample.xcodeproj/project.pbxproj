@@ -7,46 +7,80 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3010A12619283C300006EB2D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3010A12519283C300006EB2D /* AVFoundation.framework */; };
-		3060564E1928419A0022B976 /* bounce.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3060564D192841990022B976 /* bounce.caf */; };
-		30AD31B1192EC3120032BC30 /* launchSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 30AD31B0192EC3120032BC30 /* launchSound.caf */; };
-		94CA7B771924A8C30005BA4B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B761924A8C30005BA4B /* Images.xcassets */; };
-		94CA7B7A1924A8C30005BA4B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B781924A8C30005BA4B /* MainMenu.xib */; };
-		94CA7B901924A8D30005BA4B /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CA7B8F1924A8D30005BA4B /* SceneKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		94CA7B921924A91D0005BA4B /* assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B911924A91D0005BA4B /* assets.scnassets */; };
-		D7F4FE1F1AE454E400F5C24F /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F4FE1E1AE454E400F5C24F /* AudioEngine.swift */; };
-		D7F4FE231AE51E4C00F5C24F /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F4FE221AE51E4C00F5C24F /* GameView.swift */; };
-		D7F4FE271AE52F9100F5C24F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F4FE201AE51DAE00F5C24F /* GameViewController.swift */; };
-		D7F4FE291AE530A000F5C24F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F4FE281AE530A000F5C24F /* AppDelegate.swift */; };
-		D7F4FE2F1AE5324F00F5C24F /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = D7F4FE2E1AE5324F00F5C24F /* readme.txt */; };
+		B1A3C5691C179A07009C9FB6 /* macOSMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1A3C5641C179A07009C9FB6 /* macOSMain.storyboard */; };
+		B1A3C5951C179ACD009C9FB6 /* iOSMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1A3C57F1C179A65009C9FB6 /* iOSMain.storyboard */; };
+		B1A3C5961C179AD1009C9FB6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1A3C57D1C179A65009C9FB6 /* LaunchScreen.storyboard */; };
+		B1A3C59D1C179AE7009C9FB6 /* tvOSMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1A3C58A1C179A89009C9FB6 /* tvOSMain.storyboard */; };
+		B1D82D0E1BC2FA4700F4B330 /* bounce.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3060564D192841990022B976 /* bounce.caf */; };
+		B1D82D0F1BC2FA4700F4B330 /* launchSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 30AD31B0192EC3120032BC30 /* launchSound.caf */; };
+		B1D82D151BC3004900F4B330 /* assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B911924A91D0005BA4B /* assets.scnassets */; };
+		B1D82D5F1BC31C4000F4B330 /* bounce.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3060564D192841990022B976 /* bounce.caf */; };
+		B1D82D601BC31C4000F4B330 /* launchSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 30AD31B0192EC3120032BC30 /* launchSound.caf */; };
+		B1D82D611BC31C4000F4B330 /* assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B911924A91D0005BA4B /* assets.scnassets */; };
+		B1D82D681BC31C7100F4B330 /* bounce.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3060564D192841990022B976 /* bounce.caf */; };
+		B1D82D691BC31C7100F4B330 /* launchSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 30AD31B0192EC3120032BC30 /* launchSound.caf */; };
+		B1D82D6A1BC31C7100F4B330 /* assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 94CA7B911924A91D0005BA4B /* assets.scnassets */; };
+		D75726941DFFD38F00F0E3D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726931DFFD38F00F0E3D6 /* AppDelegate.swift */; };
+		D75726981DFFD3A000F0E3D6 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726951DFFD3A000F0E3D6 /* AudioEngine.swift */; };
+		D75726991DFFD3A000F0E3D6 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726961DFFD3A000F0E3D6 /* GameView.swift */; };
+		D757269A1DFFD3A000F0E3D6 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726971DFFD3A000F0E3D6 /* GameViewController.swift */; };
+		D757269B1DFFD41000F0E3D6 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726951DFFD3A000F0E3D6 /* AudioEngine.swift */; };
+		D757269C1DFFD41100F0E3D6 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726951DFFD3A000F0E3D6 /* AudioEngine.swift */; };
+		D757269D1DFFD5DD00F0E3D6 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726961DFFD3A000F0E3D6 /* GameView.swift */; };
+		D757269E1DFFD5DE00F0E3D6 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726961DFFD3A000F0E3D6 /* GameView.swift */; };
+		D757269F1DFFD5EB00F0E3D6 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726971DFFD3A000F0E3D6 /* GameViewController.swift */; };
+		D75726A01DFFD5ED00F0E3D6 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726971DFFD3A000F0E3D6 /* GameViewController.swift */; };
+		D75726A71DFFEEBE00F0E3D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726A51DFFEE5500F0E3D6 /* AppDelegate.swift */; };
+		D75726AA1DFFF06000F0E3D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75726A81DFFF00C00F0E3D6 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3010A12519283C300006EB2D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = ../../../../../System/Library/Frameworks/AVFoundation.framework; sourceTree = "<group>"; };
 		3060564D192841990022B976 /* bounce.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = bounce.caf; sourceTree = "<group>"; };
 		30AD31B0192EC3120032BC30 /* launchSound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = launchSound.caf; sourceTree = "<group>"; };
-		94CA7B631924A8C30005BA4B /* AVAEGamingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVAEGamingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		94CA7B671924A8C30005BA4B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		94CA7B761924A8C30005BA4B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		94CA7B791924A8C30005BA4B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		94CA7B8F1924A8D30005BA4B /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = /System/Library/Frameworks/SceneKit.framework; sourceTree = "<absolute>"; };
 		94CA7B911924A91D0005BA4B /* assets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = assets.scnassets; sourceTree = "<group>"; };
-		D7F4FE1E1AE454E400F5C24F /* AudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
-		D7F4FE201AE51DAE00F5C24F /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		D7F4FE221AE51E4C00F5C24F /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
-		D7F4FE281AE530A000F5C24F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D7F4FE2A1AE5320D00F5C24F /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		D7F4FE2B1AE5320D00F5C24F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		D7F4FE2E1AE5324F00F5C24F /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		B1321A201DC9511F009C8FD1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B1A3C5641C179A07009C9FB6 /* macOSMain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = macOSMain.storyboard; sourceTree = "<group>"; };
+		B1A3C5661C179A07009C9FB6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1A3C57C1C179A65009C9FB6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iOS/Info.plist; sourceTree = SOURCE_ROOT; };
+		B1A3C57E1C179A65009C9FB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = iOS/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
+		B1A3C5801C179A65009C9FB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = iOS/Base.lproj/iOSMain.storyboard; sourceTree = SOURCE_ROOT; };
+		B1A3C58B1C179A89009C9FB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = tvOS/Base.lproj/tvOSMain.storyboard; sourceTree = SOURCE_ROOT; };
+		B1A3C58C1C179A89009C9FB6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = tvOS/Info.plist; sourceTree = SOURCE_ROOT; };
+		B1D82CF71BC2F8CE00F4B330 /* AVAEGamingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVAEGamingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1D82D1A1BC3075C00F4B330 /* AVAEGamingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVAEGamingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1D82D491BC30A3800F4B330 /* AVAEGamingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVAEGamingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D75726931DFFD38F00F0E3D6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D75726951DFFD3A000F0E3D6 /* AudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		D75726961DFFD3A000F0E3D6 /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		D75726971DFFD3A000F0E3D6 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		D75726A11DFFE89D00F0E3D6 /* README2.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README2.md; sourceTree = "<group>"; };
+		D75726A21DFFE89D00F0E3D6 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		D75726A51DFFEE5500F0E3D6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = iOS/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
+		D75726A81DFFF00C00F0E3D6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = tvOS/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		94CA7B5F1924A8C30005BA4B /* Frameworks */ = {
+		B1D82CF41BC2F8CE00F4B330 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3010A12619283C300006EB2D /* AVFoundation.framework in Frameworks */,
-				94CA7B901924A8D30005BA4B /* SceneKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1D82D171BC3075C00F4B330 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1D82D461BC30A3800F4B330 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,10 +99,13 @@
 		94CA7B591924A8C30005BA4B = {
 			isa = PBXGroup;
 			children = (
-				D7F4FE2E1AE5324F00F5C24F /* readme.txt */,
-				D7F4FE2A1AE5320D00F5C24F /* LICENSE.txt */,
-				D7F4FE2B1AE5320D00F5C24F /* README.md */,
+				D75726A21DFFE89D00F0E3D6 /* LICENSE.txt */,
+				B1321A201DC9511F009C8FD1 /* README.md */,
+				D75726A11DFFE89D00F0E3D6 /* README2.md */,
 				94CA7B651924A8C30005BA4B /* AVAEGamingExample */,
+				B1D82D4A1BC30A3800F4B330 /* macOS */,
+				B1D82CF81BC2F8CE00F4B330 /* iOS */,
+				B1D82D1B1BC3075C00F4B330 /* tvOS */,
 				309573F71990518F00B2ECED /* Frameworks */,
 				94CA7B641924A8C30005BA4B /* Products */,
 			);
@@ -77,7 +114,9 @@
 		94CA7B641924A8C30005BA4B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				94CA7B631924A8C30005BA4B /* AVAEGamingExample.app */,
+				B1D82CF71BC2F8CE00F4B330 /* AVAEGamingExample.app */,
+				B1D82D1A1BC3075C00F4B330 /* AVAEGamingExample.app */,
+				B1D82D491BC30A3800F4B330 /* AVAEGamingExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,58 +124,110 @@
 		94CA7B651924A8C30005BA4B /* AVAEGamingExample */ = {
 			isa = PBXGroup;
 			children = (
-				D7F4FE1E1AE454E400F5C24F /* AudioEngine.swift */,
-				D7F4FE281AE530A000F5C24F /* AppDelegate.swift */,
-				D7F4FE221AE51E4C00F5C24F /* GameView.swift */,
-				D7F4FE201AE51DAE00F5C24F /* GameViewController.swift */,
-				94CA7B911924A91D0005BA4B /* assets.scnassets */,
-				94CA7B761924A8C30005BA4B /* Images.xcassets */,
-				94CA7B781924A8C30005BA4B /* MainMenu.xib */,
-				94CA7B661924A8C30005BA4B /* Supporting Files */,
+				D75726951DFFD3A000F0E3D6 /* AudioEngine.swift */,
+				D75726961DFFD3A000F0E3D6 /* GameView.swift */,
+				D75726971DFFD3A000F0E3D6 /* GameViewController.swift */,
+				B1D82D5D1BC30AA100F4B330 /* Assets */,
 			);
 			path = AVAEGamingExample;
 			sourceTree = "<group>";
 		};
-		94CA7B661924A8C30005BA4B /* Supporting Files */ = {
+		B1D82CF81BC2F8CE00F4B330 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D75726A51DFFEE5500F0E3D6 /* AppDelegate.swift */,
+				B1A3C57C1C179A65009C9FB6 /* Info.plist */,
+				B1A3C57D1C179A65009C9FB6 /* LaunchScreen.storyboard */,
+				B1A3C57F1C179A65009C9FB6 /* iOSMain.storyboard */,
+			);
+			name = iOS;
+			path = iOSAVAEGamingExample;
+			sourceTree = "<group>";
+		};
+		B1D82D1B1BC3075C00F4B330 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				D75726A81DFFF00C00F0E3D6 /* AppDelegate.swift */,
+				B1A3C58C1C179A89009C9FB6 /* Info.plist */,
+				B1A3C58A1C179A89009C9FB6 /* tvOSMain.storyboard */,
+			);
+			name = tvOS;
+			path = tvOSAVAEGamingExample;
+			sourceTree = "<group>";
+		};
+		B1D82D4A1BC30A3800F4B330 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				D75726931DFFD38F00F0E3D6 /* AppDelegate.swift */,
+				B1A3C5661C179A07009C9FB6 /* Info.plist */,
+				B1A3C5641C179A07009C9FB6 /* macOSMain.storyboard */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		B1D82D5D1BC30AA100F4B330 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
 				3060564D192841990022B976 /* bounce.caf */,
 				30AD31B0192EC3120032BC30 /* launchSound.caf */,
-				94CA7B671924A8C30005BA4B /* Info.plist */,
+				94CA7B761924A8C30005BA4B /* Images.xcassets */,
+				94CA7B911924A91D0005BA4B /* assets.scnassets */,
 			);
-			name = "Supporting Files";
-			path = ../AVAEGamingExample;
+			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		94CA7B601924A8C30005BA4B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		94CA7B621924A8C30005BA4B /* AVAEGamingExample */ = {
+		B1D82CF61BC2F8CE00F4B330 /* iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 94CA7B891924A8C30005BA4B /* Build configuration list for PBXNativeTarget "AVAEGamingExample" */;
+			buildConfigurationList = B1D82D0B1BC2F8CE00F4B330 /* Build configuration list for PBXNativeTarget "iOS" */;
 			buildPhases = (
-				94CA7B5E1924A8C30005BA4B /* Sources */,
-				94CA7B5F1924A8C30005BA4B /* Frameworks */,
-				94CA7B601924A8C30005BA4B /* Headers */,
-				94CA7B611924A8C30005BA4B /* Resources */,
+				B1D82CF31BC2F8CE00F4B330 /* Sources */,
+				B1D82CF41BC2F8CE00F4B330 /* Frameworks */,
+				B1D82CF51BC2F8CE00F4B330 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = AVAEGamingExample;
-			productName = audioDemo;
-			productReference = 94CA7B631924A8C30005BA4B /* AVAEGamingExample.app */;
+			name = iOS;
+			productName = iOSAVAEGamingExample;
+			productReference = B1D82CF71BC2F8CE00F4B330 /* AVAEGamingExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B1D82D191BC3075C00F4B330 /* tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1D82D2D1BC3075C00F4B330 /* Build configuration list for PBXNativeTarget "tvOS" */;
+			buildPhases = (
+				B1D82D161BC3075C00F4B330 /* Sources */,
+				B1D82D171BC3075C00F4B330 /* Frameworks */,
+				B1D82D181BC3075C00F4B330 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tvOS;
+			productName = tvOSAVAEGamingExample;
+			productReference = B1D82D1A1BC3075C00F4B330 /* AVAEGamingExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B1D82D481BC30A3800F4B330 /* macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1D82D5A1BC30A3800F4B330 /* Build configuration list for PBXNativeTarget "macOS" */;
+			buildPhases = (
+				B1D82D451BC30A3800F4B330 /* Sources */,
+				B1D82D461BC30A3800F4B330 /* Frameworks */,
+				B1D82D471BC30A3800F4B330 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = macOS;
+			productName = OSXAVAEGamingExample;
+			productReference = B1D82D491BC30A3800F4B330 /* AVAEGamingExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -145,13 +236,21 @@
 		94CA7B5A1924A8C30005BA4B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = apple;
 				TargetAttributes = {
-					94CA7B621924A8C30005BA4B = {
-						CreatedOnToolsVersion = 6.0;
-						LastSwiftMigration = 0800;
+					B1D82CF61BC2F8CE00F4B330 = {
+						CreatedOnToolsVersion = 7.0;
+						ProvisioningStyle = Automatic;
+					};
+					B1D82D191BC3075C00F4B330 = {
+						CreatedOnToolsVersion = 7.0;
+						ProvisioningStyle = Automatic;
+					};
+					B1D82D481BC30A3800F4B330 = {
+						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -168,48 +267,109 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				94CA7B621924A8C30005BA4B /* AVAEGamingExample */,
+				B1D82CF61BC2F8CE00F4B330 /* iOS */,
+				B1D82D191BC3075C00F4B330 /* tvOS */,
+				B1D82D481BC30A3800F4B330 /* macOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		94CA7B611924A8C30005BA4B /* Resources */ = {
+		B1D82CF51BC2F8CE00F4B330 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F4FE2F1AE5324F00F5C24F /* readme.txt in Resources */,
-				30AD31B1192EC3120032BC30 /* launchSound.caf in Resources */,
-				94CA7B771924A8C30005BA4B /* Images.xcassets in Resources */,
-				94CA7B921924A91D0005BA4B /* assets.scnassets in Resources */,
-				3060564E1928419A0022B976 /* bounce.caf in Resources */,
-				94CA7B7A1924A8C30005BA4B /* MainMenu.xib in Resources */,
+				B1D82D151BC3004900F4B330 /* assets.scnassets in Resources */,
+				B1D82D0E1BC2FA4700F4B330 /* bounce.caf in Resources */,
+				B1A3C5961C179AD1009C9FB6 /* LaunchScreen.storyboard in Resources */,
+				B1A3C5951C179ACD009C9FB6 /* iOSMain.storyboard in Resources */,
+				B1D82D0F1BC2FA4700F4B330 /* launchSound.caf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1D82D181BC3075C00F4B330 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1D82D681BC31C7100F4B330 /* bounce.caf in Resources */,
+				B1D82D691BC31C7100F4B330 /* launchSound.caf in Resources */,
+				B1A3C59D1C179AE7009C9FB6 /* tvOSMain.storyboard in Resources */,
+				B1D82D6A1BC31C7100F4B330 /* assets.scnassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1D82D471BC30A3800F4B330 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1A3C5691C179A07009C9FB6 /* macOSMain.storyboard in Resources */,
+				B1D82D5F1BC31C4000F4B330 /* bounce.caf in Resources */,
+				B1D82D601BC31C4000F4B330 /* launchSound.caf in Resources */,
+				B1D82D611BC31C4000F4B330 /* assets.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		94CA7B5E1924A8C30005BA4B /* Sources */ = {
+		B1D82CF31BC2F8CE00F4B330 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7F4FE291AE530A000F5C24F /* AppDelegate.swift in Sources */,
-				D7F4FE271AE52F9100F5C24F /* GameViewController.swift in Sources */,
-				D7F4FE1F1AE454E400F5C24F /* AudioEngine.swift in Sources */,
-				D7F4FE231AE51E4C00F5C24F /* GameView.swift in Sources */,
+				D75726A71DFFEEBE00F0E3D6 /* AppDelegate.swift in Sources */,
+				D757269B1DFFD41000F0E3D6 /* AudioEngine.swift in Sources */,
+				D757269F1DFFD5EB00F0E3D6 /* GameViewController.swift in Sources */,
+				D757269D1DFFD5DD00F0E3D6 /* GameView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1D82D161BC3075C00F4B330 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D75726AA1DFFF06000F0E3D6 /* AppDelegate.swift in Sources */,
+				D757269C1DFFD41100F0E3D6 /* AudioEngine.swift in Sources */,
+				D75726A01DFFD5ED00F0E3D6 /* GameViewController.swift in Sources */,
+				D757269E1DFFD5DE00F0E3D6 /* GameView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1D82D451BC30A3800F4B330 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D75726941DFFD38F00F0E3D6 /* AppDelegate.swift in Sources */,
+				D757269A1DFFD3A000F0E3D6 /* GameViewController.swift in Sources */,
+				D75726991DFFD3A000F0E3D6 /* GameView.swift in Sources */,
+				D75726981DFFD3A000F0E3D6 /* AudioEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		94CA7B781924A8C30005BA4B /* MainMenu.xib */ = {
+		B1A3C57D1C179A65009C9FB6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				94CA7B791924A8C30005BA4B /* Base */,
+				B1A3C57E1C179A65009C9FB6 /* Base */,
 			);
-			name = MainMenu.xib;
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B1A3C57F1C179A65009C9FB6 /* iOSMain.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1A3C5801C179A65009C9FB6 /* Base */,
+			);
+			name = iOSMain.storyboard;
+			sourceTree = "<group>";
+		};
+		B1A3C58A1C179A89009C9FB6 /* tvOSMain.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1A3C58B1C179A89009C9FB6 /* Base */,
+			);
+			name = tvOSMain.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -253,10 +413,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				METAL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "${PROJECT_NAME}";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0.1;
 			};
 			name = Debug;
 		};
@@ -292,40 +455,119 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "${PROJECT_NAME}";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0.1;
 			};
 			name = Release;
 		};
-		94CA7B8A1924A8C30005BA4B /* Debug */ = {
+		B1D82D0C1BC2F8CE00F4B330 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.AVAEGamingExample";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B1D82D0D1BC2F8CE00F4B330 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = "";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.AVAEGamingExample";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B1D82D2E1BC3075C00F4B330 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.AVAEGamingExample";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		B1D82D2F1BC3075C00F4B330 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = "";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.AVAEGamingExample";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B1D82D5B1BC30A3800F4B330 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = AVAEGamingExample/Info.plist;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.scenekit.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = AVAEGamingExample;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.AVAEGamingExample";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
-		94CA7B8B1924A8C30005BA4B /* Release */ = {
+		B1D82D5C1BC30A3800F4B330 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = AVAEGamingExample/Info.plist;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = "";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.apple.scenekit.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = AVAEGamingExample;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.AVAEGamingExample";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -342,11 +584,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		94CA7B891924A8C30005BA4B /* Build configuration list for PBXNativeTarget "AVAEGamingExample" */ = {
+		B1D82D0B1BC2F8CE00F4B330 /* Build configuration list for PBXNativeTarget "iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				94CA7B8A1924A8C30005BA4B /* Debug */,
-				94CA7B8B1924A8C30005BA4B /* Release */,
+				B1D82D0C1BC2F8CE00F4B330 /* Debug */,
+				B1D82D0D1BC2F8CE00F4B330 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1D82D2D1BC3075C00F4B330 /* Build configuration list for PBXNativeTarget "tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1D82D2E1BC3075C00F4B330 /* Debug */,
+				B1D82D2F1BC3075C00F4B330 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1D82D5A1BC30A3800F4B330 /* Build configuration list for PBXNativeTarget "macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1D82D5B1BC30A3800F4B330 /* Debug */,
+				B1D82D5C1BC30A3800F4B330 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

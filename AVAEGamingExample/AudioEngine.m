@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015 Apple Inc. All Rights Reserved.
+    Copyright (C) 2016 Apple Inc. All Rights Reserved.
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
@@ -16,16 +16,19 @@
 */
 
 #import "AudioEngine.h"
-#import <AVFoundation/AVFoundation.h>
 
 @interface AudioEngine () {
-    AVAudioEngine           *_engine;
-    AVAudioEnvironmentNode  *_environment;
-    AVAudioPCMBuffer        *_collisionSoundBuffer;
-    NSMutableArray          *_collisionPlayerArray;
-    AVAudioPlayerNode       *_launchSoundPlayer;
-    AVAudioPCMBuffer        *_launchSoundBuffer;
-    bool                    _multichannelOutputEnabled;
+    AVAudioEngine                       *_engine;
+    AVAudioEnvironmentNode              *_environment;
+    AVAudioPCMBuffer                    *_collisionSoundBuffer;
+    NSMutableArray <AVAudioPlayerNode*> *_collisionPlayerArray;
+    AVAudioPlayerNode                   *_launchSoundPlayer;
+    AVAudioPCMBuffer                    *_launchSoundBuffer;
+    bool                                _multichannelOutputEnabled;
+    
+    // mananging session and configuration changes
+    BOOL                    _isSessionInterrupted;
+    BOOL                    _isConfigChangePending;
 }
 @end
 
@@ -33,22 +36,38 @@
 
 - (AVAudioPCMBuffer *)loadSoundIntoBuffer:(NSString *)filename
 {
+    NSError *error;
+    BOOL success = NO;
+    
     // load the collision sound into a buffer
     NSURL *soundFileURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:filename ofType:@"caf"]];
     NSAssert(soundFileURL, @"Error creating URL to sound file");
-    NSError *error;
+    
     AVAudioFile *soundFile = [[AVAudioFile alloc] initForReading:soundFileURL commonFormat:AVAudioPCMFormatFloat32 interleaved:NO error:&error];
     NSAssert(soundFile != nil, @"Error creating soundFile, %@", error.localizedDescription);
     
     AVAudioPCMBuffer *outputBuffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:soundFile.processingFormat frameCapacity:(AVAudioFrameCount)soundFile.length];
-    NSAssert([soundFile readIntoBuffer:outputBuffer error:&error], @"Error reading file into buffer, %@", error.localizedDescription);
+    success = [soundFile readIntoBuffer:outputBuffer error:&error];
+    NSAssert(success, @"Error reading file into buffer, %@", error.localizedDescription);
     
     return outputBuffer;
+}
+
+- (BOOL)isRunning
+{
+    return _engine.isRunning;
 }
 
 - (instancetype)init
 {
     if (self = [super init]) {
+        
+#if TARGET_OS_IOS || TARGET_OS_SIMULATOR
+        [self initAVAudioSession];
+#endif
+        _isSessionInterrupted = NO;
+        _isConfigChangePending = NO;
+        
         _engine = [[AVAudioEngine alloc] init];
         _environment = [[AVAudioEnvironmentNode alloc] init];
         [_engine attachNode:_environment];
@@ -73,16 +92,31 @@
         // sign up for notifications about changes in output configuration
         [[NSNotificationCenter defaultCenter] addObserverForName:AVAudioEngineConfigurationChangeNotification object:_engine queue:nil usingBlock: ^(NSNotification *note) {
             
-            // if the engine configuration does change, rewire everything up once again
-            NSLog(@"Engine configuration changed! Re-wiring connections...");
-            [self makeEngineConnections];
-            [self startEngine];
+            // if we've received this notification, something has changed and the engine has been stopped
+            // re-wire all the connections and start the engine
+            
+            _isConfigChangePending = YES;
+            
+            if (!_isSessionInterrupted) {
+                NSLog(@"Received a %@ notification!", AVAudioEngineConfigurationChangeNotification);
+                NSLog(@"Re-wiring connections and starting once again");
+                [self makeEngineConnections];
+                [self startEngine];
+            }
+            else {
+                NSLog(@"Session is interrupted, deferring changes");
+            }
+            
+            // post notification
+            if ([self.delegate respondsToSelector:@selector(engineConfigurationHasChanged)]) {
+                [self.delegate engineConfigurationHasChanged];
+            }
         }];
         
         // turn on the environment reverb
         _environment.reverbParameters.enable = YES;
+        _environment.reverbParameters.level = -20.0;
         [_environment.reverbParameters loadFactoryReverbPreset:AVAudioUnitReverbPresetLargeHall];
-        _environment.reverbParameters.level = -20.;
  
         // we're ready to start rendering so start the engine
         [self startEngine];
@@ -99,16 +133,18 @@
     AVAudio3DMixingRenderingAlgorithm renderingAlgo = _multichannelOutputEnabled ? AVAudio3DMixingRenderingAlgorithmSoundField : AVAudio3DMixingRenderingAlgorithmEqualPowerPanning;
     
     // if we already have a pool of collision players, connect all of them to the environment
-    [_collisionPlayerArray enumerateObjectsUsingBlock:^(AVAudioPlayerNode *collisionPlayer, NSUInteger idx, BOOL *stop) {
-        [_engine connect:collisionPlayer to:_environment format:_collisionSoundBuffer.format];
-        collisionPlayer.renderingAlgorithm = renderingAlgo;
-    }];
+    for (int i = 0; i < _collisionPlayerArray.count; i++) {
+        [_engine connect:_collisionPlayerArray[i] to:_environment format:_collisionSoundBuffer.format];
+        _collisionPlayerArray[i].renderingAlgorithm = renderingAlgo;
+    }
 }
 
 - (void)startEngine
 {
     NSError *error;
-    NSAssert([_engine startAndReturnError:&error], @"Error starting engine, %@", error.localizedDescription);
+    BOOL success = NO;
+    success = [_engine startAndReturnError:&error];
+    NSAssert(success, @"Error starting engine, %@", error.localizedDescription);
 }
 
 - (AVAudioFormat *)constructOutputConnectionFormatForEnvironment
@@ -169,16 +205,12 @@
 {
     // create a new player and connect it to the environment node
     AVAudioPlayerNode *newPlayer = [[AVAudioPlayerNode alloc] init];
-    
     [_engine attachNode:newPlayer];
     [_engine connect:newPlayer to:_environment format:_collisionSoundBuffer.format];
     [_collisionPlayerArray insertObject:newPlayer atIndex:[node.name integerValue]];
     
     // pick a rendering algorithm based on the rendering format
-    AVAudio3DMixingRenderingAlgorithm renderingAlgo = _multichannelOutputEnabled ?
-                                                      AVAudio3DMixingRenderingAlgorithmSoundField :
-                                                      AVAudio3DMixingRenderingAlgorithmEqualPowerPanning;
-    
+    AVAudio3DMixingRenderingAlgorithm renderingAlgo = _multichannelOutputEnabled ? AVAudio3DMixingRenderingAlgorithmSoundField : AVAudio3DMixingRenderingAlgorithmEqualPowerPanning;
     newPlayer.renderingAlgorithm = renderingAlgo;
     
     // turn up the reverb blend for this player
@@ -197,21 +229,19 @@
 {
     if (_engine.isRunning) {
         NSInteger playerIndex = [node.name integerValue];
-        
         AVAudioPlayerNode *player = _collisionPlayerArray[playerIndex];
-        
         [player scheduleBuffer:_collisionSoundBuffer atTime:nil options:AVAudioPlayerNodeBufferInterrupts completionHandler:nil];
         player.position = position;
         player.volume = [self calculateVolumeForImpulse:impulse];
         player.rate = [self calculatePlaybackRateForImpulse:impulse];
-        
         [player play];
     }
 }
 
-- (void)playLaunchSound:(AVAudioNodeCompletionHandler)completionHandler
+- (void)playLaunchSoundAtPosition:(AVAudio3DPoint)position completionHandler:(AVAudioNodeCompletionHandler)completionHandler
 {
     if (_engine.isRunning) {
+        _launchSoundPlayer.position = position;
         [_launchSoundPlayer scheduleBuffer:_launchSoundBuffer completionHandler:completionHandler];
         [_launchSoundPlayer play];
     }
@@ -226,7 +256,6 @@
     
     if (impulse > impulseMax) impulse = impulseMax;
     float volDB = (impulse / impulseMax * -volMinDB) + volMinDB;
-    
     return powf(10, (volDB / 20));
 }
 
@@ -247,5 +276,178 @@
     
     return (((impulse - impulseMin) / impulseRange) * rateRange) + rateMin;
 }
+
+- (void)updateListenerPosition:(AVAudio3DPoint)position
+{
+    _environment.listenerPosition = position;
+}
+
+- (AVAudio3DPoint)listenerPosition
+{
+    return _environment.listenerPosition;
+}
+
+- (void)updateListenerOrientation:(AVAudio3DAngularOrientation)orientation
+{
+    _environment.listenerAngularOrientation = orientation;
+}
+
+- (AVAudio3DAngularOrientation)listenerAngularOrientation
+{
+    return _environment.listenerAngularOrientation;
+}
+
+#pragma mark AVAudioSession
+
+#if TARGET_OS_IOS || TARGET_OS_SIMULATOR
+- (void)initAVAudioSession
+{
+    NSError *error;
+    
+    // Configure the audio session
+    AVAudioSession *sessionInstance = [AVAudioSession sharedInstance];
+
+    // set the session category
+    bool success = [sessionInstance setCategory:AVAudioSessionCategoryPlayback error:&error];
+    if (!success) NSLog(@"Error setting AVAudioSession category! %@\n", [error localizedDescription]);
+     
+    const NSInteger desiredNumChannels = 8; // for 7.1 rendering
+    const NSInteger maxChannels = sessionInstance.maximumOutputNumberOfChannels;
+    if (maxChannels >= desiredNumChannels) {
+        success = [sessionInstance setPreferredOutputNumberOfChannels:desiredNumChannels error:&error];
+        if (!success) NSLog(@"Error setting PreferredOuputNumberOfChannels! %@", [error localizedDescription]);
+    }
+    
+    
+    // add interruption handler
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleInterruption:)
+                                                 name:AVAudioSessionInterruptionNotification
+                                               object:sessionInstance];
+    
+    // we don't do anything special in the route change notification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleRouteChange:)
+                                                 name:AVAudioSessionRouteChangeNotification
+                                               object:sessionInstance];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleMediaServicesReset:)
+                                                 name:AVAudioSessionMediaServicesWereResetNotification
+                                               object:sessionInstance];
+    
+    // activate the audio session
+    success = [sessionInstance setActive:YES error:&error];
+    if (!success) NSLog(@"Error setting session active! %@\n", [error localizedDescription]);
+}
+
+- (void)handleInterruption:(NSNotification *)notification
+{
+    UInt8 theInterruptionType = [[notification.userInfo valueForKey:AVAudioSessionInterruptionTypeKey] intValue];
+    
+    NSLog(@"Session interrupted > --- %s ---\n", theInterruptionType == AVAudioSessionInterruptionTypeBegan ? "Begin Interruption" : "End Interruption");
+    
+    if (theInterruptionType == AVAudioSessionInterruptionTypeBegan) {
+        _isSessionInterrupted = YES;
+        
+        //stop the playback of the nodes
+        for (int i = 0; i < _collisionPlayerArray.count; i++)
+             [[_collisionPlayerArray objectAtIndex:i] stop];
+        
+        if ([self.delegate respondsToSelector:@selector(engineWasInterrupted)]) {
+            [self.delegate engineWasInterrupted];
+        }
+        
+    }
+    if (theInterruptionType == AVAudioSessionInterruptionTypeEnded) {
+        // make sure to activate the session
+        NSError *error;
+        bool success = [[AVAudioSession sharedInstance] setActive:YES error:&error];
+        if (!success)
+            NSLog(@"AVAudioSession set active failed with error: %@", [error localizedDescription]);
+        else {
+            _isSessionInterrupted = NO;
+            if (_isConfigChangePending) {
+                //there is a pending config changed notification
+                NSLog(@"Responding to earlier engine config changed notification. Re-wiring connections and starting once again");
+                [self makeEngineConnections];
+                [self startEngine];
+                
+                _isConfigChangePending = NO;
+            }
+            else {
+                // start the engine once again
+                [self startEngine];
+            }
+        }
+    }
+}
+
+- (void)handleRouteChange:(NSNotification *)notification
+{
+    UInt8 reasonValue = [[notification.userInfo valueForKey:AVAudioSessionRouteChangeReasonKey] intValue];
+    AVAudioSessionRouteDescription *routeDescription = [notification.userInfo valueForKey:AVAudioSessionRouteChangePreviousRouteKey];
+    
+    NSLog(@"Route change:");
+    switch (reasonValue) {
+        case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+            NSLog(@"     NewDeviceAvailable");
+            break;
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+            NSLog(@"     OldDeviceUnavailable");
+            break;
+        case AVAudioSessionRouteChangeReasonCategoryChange:
+            NSLog(@"     CategoryChange");
+            NSLog(@"     New Category: %@", [[AVAudioSession sharedInstance] category]);
+            break;
+        case AVAudioSessionRouteChangeReasonOverride:
+            NSLog(@"     Override");
+            break;
+        case AVAudioSessionRouteChangeReasonWakeFromSleep:
+            NSLog(@"     WakeFromSleep");
+            break;
+        case AVAudioSessionRouteChangeReasonNoSuitableRouteForCategory:
+            NSLog(@"     NoSuitableRouteForCategory");
+            break;
+        default:
+            NSLog(@"     ReasonUnknown");
+    }
+    
+    NSLog(@"Previous route:\n");
+    NSLog(@"%@", routeDescription);
+}
+
+- (void)handleMediaServicesReset:(NSNotification *)notification
+{
+    // if we've received this notification, the media server has been reset
+    // re-wire all the connections and start the engine
+    NSLog(@"Media services have been reset!");
+    NSLog(@"Re-wiring connections and starting once again");
+    
+    [self initAVAudioSession];
+    [self createEngineAndAttachNodes];
+    [self makeEngineConnections];
+    [self startEngine];
+    
+    //notify the delegate
+    if ([self.delegate respondsToSelector:@selector(engineConfigurationHasChanged)]) {
+        [self.delegate engineConfigurationHasChanged];
+    }
+}
+
+- (void)createEngineAndAttachNodes
+{
+    _engine = [[AVAudioEngine alloc] init];
+    
+    [_engine attachNode:_environment];
+    [_engine attachNode:_launchSoundPlayer];
+    
+    for (int i = 0; i < _collisionPlayerArray.count; i++)
+        [_engine attachNode:[_collisionPlayerArray objectAtIndex:i]];
+    
+}
+
+#endif
+
 
 @end
