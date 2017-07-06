@@ -417,7 +417,7 @@ class AudioEngine: NSObject {
         }
         
         NSLog("Previous route:\n")
-        NSLog("\(routeDescription)")
+        NSLog("\(routeDescription?.description ?? "nil")")
     }
     
     @objc private func handleMediaServicesReset(_ notification: NSNotification) {

@@ -75,27 +75,27 @@ class GameViewController: OSViewController, SCNPhysicsContactDelegate, AudioEngi
         
         let wall2 = wall1.copy() as! SCNNode
         wall2.position = SCNVector3Make(0, 0, wallPosition)
-        wall2.eulerAngles = SCNVector3Make(SCNVectorFloat(M_PI), 0, 0)
+        wall2.eulerAngles = SCNVector3Make(.pi, 0, 0)
         scene.rootNode.addChildNode(wall2)
         
         let wall3 = wall1.copy() as! SCNNode
         wall3.position = SCNVector3Make(-wallPosition, 0, 0)
-        wall3.eulerAngles = SCNVector3Make(0, SCNVectorFloat(M_PI_2), 0)
+        wall3.eulerAngles = SCNVector3Make(0, .pi/2, 0)
         scene.rootNode.addChildNode(wall3)
         
         let wall4 = wall1.copy() as! SCNNode
         wall4.position = SCNVector3Make(wallPosition, 0, 0)
-        wall4.eulerAngles = SCNVector3Make(0, SCNVectorFloat(-M_PI_2), 0)
+        wall4.eulerAngles = SCNVector3Make(0, -.pi/2, 0)
         scene.rootNode.addChildNode(wall4)
         
         let wall5 = wall1.copy() as! SCNNode
         wall5.position = SCNVector3Make(0, wallPosition, 0)
-        wall5.eulerAngles = SCNVector3Make(SCNVectorFloat(M_PI_2), 0, 0)
+        wall5.eulerAngles = SCNVector3Make(.pi/2, 0, 0)
         scene.rootNode.addChildNode(wall5)
         
         let wall6 = wall1.copy() as! SCNNode
         wall6.position = SCNVector3Make(0, -wallPosition, 0)
-        wall6.eulerAngles = SCNVector3Make(SCNVectorFloat(-M_PI_2), 0, 0)
+        wall6.eulerAngles = SCNVector3Make(-.pi/2, 0, 0)
         scene.rootNode.addChildNode(wall6)
         
         let pointOfViewCamera = scene.rootNode.childNode(withName: "Camera", recursively: true)!

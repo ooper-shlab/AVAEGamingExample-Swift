@@ -31,11 +31,11 @@ class GameView: SCNView {
     }
     
     func degreesFromRad<F: BinaryFloatingPoint>(_ rad: F) -> F {
-        return (rad/F(M_PI)) * 180
+        return (rad / .pi) * 180
     }
     
     func radFromDegrees<F: BinaryFloatingPoint>(_ degree: F) -> F {
-        return (degree/180) * F(M_PI)
+        return (degree/180) * .pi
     }
     
     private func updateEulerAnglesAndListener(fromDeltaX dx: CGFloat, deltaY dy: CGFloat) {
