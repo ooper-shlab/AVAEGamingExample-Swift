@@ -63,7 +63,7 @@ class AudioEngine: NSObject {
             fatalError("Error creating soundFile, \(error.localizedDescription)")
         }
         
-        let outputBuffer = AVAudioPCMBuffer(pcmFormat: soundFile!.processingFormat, frameCapacity: AVAudioFrameCount(soundFile!.length))
+        let outputBuffer = AVAudioPCMBuffer(pcmFormat: soundFile!.processingFormat, frameCapacity: AVAudioFrameCount(soundFile!.length))!
         do {
             try soundFile!.read(into: outputBuffer)
         } catch let error as NSError {
@@ -195,11 +195,11 @@ class AudioEngine: NSObject {
             
             // using that layout tag, now construct a format
             let environmentOutputChannelLayout = AVAudioChannelLayout(layoutTag: environmentOutputLayoutTag)
-            environmentOutputConnectionFormat = AVAudioFormat(standardFormatWithSampleRate: hardwareSampleRate, channelLayout: environmentOutputChannelLayout)
+            environmentOutputConnectionFormat = AVAudioFormat(standardFormatWithSampleRate: hardwareSampleRate, channelLayout: environmentOutputChannelLayout!)
             _multichannelOutputEnabled = true
         } else {
             // stereo rendering format, this is the common case
-            environmentOutputConnectionFormat = AVAudioFormat(standardFormatWithSampleRate: hardwareSampleRate, channels: 2)
+            environmentOutputConnectionFormat = AVAudioFormat(standardFormatWithSampleRate: hardwareSampleRate, channels: 2)!
             _multichannelOutputEnabled = false
         }
         
@@ -307,7 +307,11 @@ class AudioEngine: NSObject {
         
         // set the session category
         do {
-            try sessionInstance.setCategory(AVAudioSessionCategoryPlayback)
+            if #available(iOS 10.0, tvOS 10.0, *) {
+                try sessionInstance.setCategory(.playback, mode: .default)
+            } else {
+                try sessionInstance.setCategory(.playback)
+            }
         } catch let error as NSError {
             NSLog("Error setting AVAudioSession category! \(error.localizedDescription)\n")
         }
@@ -327,20 +331,20 @@ class AudioEngine: NSObject {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleInterruption),
-            name: Notification.Name.AVAudioSessionInterruption,
+            name: AVAudioSession.interruptionNotification,
             object: sessionInstance)
         
         // we don't do anything special in the route change notification
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleRouteChange),
-            name: Notification.Name.AVAudioSessionRouteChange,
+            name: AVAudioSession.routeChangeNotification,
             object: sessionInstance)
         
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleMediaServicesReset),
-            name: NSNotification.Name.AVAudioSessionMediaServicesWereReset,
+            name: AVAudioSession.mediaServicesWereResetNotification,
             object: sessionInstance)
         
         // activate the audio session
@@ -353,12 +357,12 @@ class AudioEngine: NSObject {
     
     @objc private func handleInterruption(_ notification: NSNotification) {
         let theInterruptionType = notification.userInfo![AVAudioSessionInterruptionTypeKey].flatMap {
-            AVAudioSessionInterruptionType(rawValue: $0 as! UInt)
+            AVAudioSession.InterruptionType(rawValue: $0 as! UInt)
         }
         
-        NSLog("Session interrupted > --- %s ---\n", theInterruptionType == AVAudioSessionInterruptionType.began ? "Begin Interruption" : "End Interruption")
+        NSLog("Session interrupted > --- %s ---\n", theInterruptionType == AVAudioSession.InterruptionType.began ? "Begin Interruption" : "End Interruption")
         
-        if theInterruptionType == AVAudioSessionInterruptionType.began {
+        if theInterruptionType == AVAudioSession.InterruptionType.began {
             _isSessionInterrupted = true
             
             //stop the playback of the nodes
@@ -369,7 +373,7 @@ class AudioEngine: NSObject {
             self.delegate?.engineWasInterrupted?()
             
         }
-        if theInterruptionType == AVAudioSessionInterruptionType.ended {
+        if theInterruptionType == AVAudioSession.InterruptionType.ended {
             // make sure to activate the session
             do {
                 try AVAudioSession.sharedInstance().setActive(true)
@@ -393,24 +397,24 @@ class AudioEngine: NSObject {
     
     @objc private func handleRouteChange(_ notification: NSNotification) {
         let reasonValue = notification.userInfo![AVAudioSessionRouteChangeReasonKey].flatMap {
-            AVAudioSessionRouteChangeReason(rawValue: $0 as! UInt)
+            AVAudioSession.RouteChangeReason(rawValue: $0 as! UInt)
         }
         let routeDescription = notification.userInfo![AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription
         
         NSLog("Route change:")
         switch (reasonValue) {
-        case AVAudioSessionRouteChangeReason.newDeviceAvailable?:
+        case AVAudioSession.RouteChangeReason.newDeviceAvailable?:
             NSLog("     NewDeviceAvailable")
-        case AVAudioSessionRouteChangeReason.oldDeviceUnavailable?:
+        case AVAudioSession.RouteChangeReason.oldDeviceUnavailable?:
             NSLog("     OldDeviceUnavailable")
-        case AVAudioSessionRouteChangeReason.categoryChange?:
+        case AVAudioSession.RouteChangeReason.categoryChange?:
             NSLog("     CategoryChange")
-            NSLog("     New Category: %@", AVAudioSession.sharedInstance().category)
-        case AVAudioSessionRouteChangeReason.override?:
+            NSLog("     New Category: %@", AVAudioSession.sharedInstance().category.rawValue)
+        case AVAudioSession.RouteChangeReason.override?:
             NSLog("     Override")
-        case AVAudioSessionRouteChangeReason.wakeFromSleep?:
+        case AVAudioSession.RouteChangeReason.wakeFromSleep?:
             NSLog("     WakeFromSleep")
-        case AVAudioSessionRouteChangeReason.noSuitableRouteForCategory?:
+        case AVAudioSession.RouteChangeReason.noSuitableRouteForCategory?:
             NSLog("     NoSuitableRouteForCategory")
         default:
             NSLog("     ReasonUnknown")
